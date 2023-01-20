@@ -5,6 +5,9 @@ import func
 import json
 import time
 
+#To make it .exe
+#python -m pysimplegui-exemaker.pysimplegui-exemaker
+
 #Global variables and classes__________________________________________________
 
 contributors = []
