@@ -41,7 +41,7 @@ def Start():
     layout = [
         [sg.Text('Welcome to the receipt calculator!', font = fonts.header, justification="c")],
         [sg.Text('\t\tNew receipt:\t'), sg.Button("New", font = fonts.button, size=(7,1))],
-        [sg.Text('\t\tFind old receipt:\t'), sg.Button("Load", font = fonts.button, size=(7,1))],
+        [sg.Text('\t\tLoad receipt:\t'), sg.Button("Load", font = fonts.button, size=(7,1))],
         [sg.Text('\t\tView statistics:\t'), sg.Button("Data", font = fonts.button, size=(7,1))],
         [sg.Button('Exit',font = fonts.button, size=(7,1))]
     ]
@@ -51,7 +51,7 @@ def ReceiptCreate(itemList):
     layout = [
     [sg.Text('Please input a date:\t'), sg.CalendarButton("Calendar", target = "date", font = fonts.button, size=(9,1)), sg.In(key = "date",font=fonts.input, size=(40,1))],
     [sg.Text("Please input a store:\t"), sg.InputText(key = "store",font=fonts.input,size=(53,1))],
-    [sg.Text("Please input who payed:\t"), sg.InputText(key = "paidBy",font=fonts.input,size=(53,1))],
+    [sg.Text("Please input who paid:\t"), sg.InputText(key = "paidBy",font=fonts.input,size=(53,1))],
     [sg.Text("Write name of contributor:\t"), sg.InputText(key = "contrib",font=fonts.input), sg.Button("Add", font = fonts.button, size=(5,1))],
     [sg.Text("List of contributors, not including who paid: ", font=fonts.body), sg.Text(key = "-OUTPUT-", font=fonts.body)],
     [sg.Button("Create receipt", key = "Create receipt", font = fonts.button, size=(13,1)), sg.Text(key = "-OUTPUT2-", font=fonts.body)],
@@ -109,24 +109,45 @@ def ItemEdit(showContrib):
 
 def Load():
     layoutL = [
-        [sg.Text("You havent loaded anything yet")],
-        [sg.Listbox(values = [], s=(35,16), key="listboxSelect", enable_events=True, font = fonts.body)]
+        [sg.Text("You havent loaded anything yet", key = "didYouLoad")],
+        [sg.Listbox(values = [], s=(40,17), key="listboxSelect", enable_events=True, font = fonts.body)]
     ]
 
     layoutR = [
-        [sg.Text("Filter for date:\t"),sg.CalendarButton("Calendar", target = "date", font = fonts.button, size=(9,1)), sg.In(key = "date",font=fonts.input, size=(20,1))],
+        [sg.Text("Filter for month and year: "),sg.Spin([i for i in range(2023,2025)],key = "year",font=fonts.input, size=(10,1), initial_value=2023),sg.Spin([j for j in range(0,13)],key = "month",font=fonts.input, size=(10,1), initial_value=0)],
         [sg.Text("Filter for store:\t"), sg.In(key = "store",font=fonts.input, size=(33,1))],
         [sg.Text("Selected item:", font = fonts.body)],
-        [sg.T(s=(5,1)),sg.Multiline(key = "showReceipt", s=(35,10), font = fonts.body)],
-        [sg.T(s=(5,1)),sg.Button("Load all receipts", s=(15,1)),sg.T("   or   ", font=fonts.body, justification = "c"),sg.Button("Apply filter", s=(10,1))]
+        [sg.T(s=(5,1)),sg.Multiline(key = "showReceipt", s=(43,12), font = fonts.body)],
+        [sg.T(s=(5,1)),sg.Button("Load all receipts", s=(15,1), font=func.fonts.button),sg.T("         or         ", font=fonts.body, justification = "c"),sg.Button("Apply filter", s=(10,1), font=func.fonts.button)]
     ]
 
     layout = [
         [sg.Text("Welcome to the receipt loader!",font = fonts.header)],
         [sg.Col(layoutL),sg.Col(layoutR)],
-        [sg.Exit(s=(5,1))]
+        [sg.Exit(s=(5,1), font=func.fonts.button)]
     ]
     return layout
+
+# def Stats():
+#     layoutL = [
+#         [sg.Text("You havent begun to show data")],
+#         [sg.Canvas(values = [], s=(40,17), key="listboxSelect", enable_events=True, font = fonts.body)]
+#     ]
+
+#     layoutR = [
+#         [sg.Text("Filter for month and year: "),sg.Spin([i for i in range(2023,2025)],key = "year",font=fonts.input, size=(10,1), initial_value=2023),sg.Spin([j for j in range(0,13)],key = "month",font=fonts.input, size=(10,1), initial_value=0)],
+#         [sg.Text("Filter for store:\t"), sg.In(key = "store",font=fonts.input, size=(33,1))],
+#         [sg.Text("Selected item:", font = fonts.body)],
+#         [sg.T(s=(5,1)),sg.Multiline(key = "showReceipt", s=(43,12), font = fonts.body)],
+#         [sg.T(s=(5,1)),sg.Button("Load all receipts", s=(15,1), font=func.fonts.button),sg.T("         or         ", font=fonts.body, justification = "c"),sg.Button("Apply filter", s=(10,1), font=func.fonts.button)]
+#     ]
+
+#     layout = [
+#         [sg.Text("Welcome to the receipt loader!",font = fonts.header)],
+#         [sg.Col(layoutL),sg.Col(layoutR)],
+#         [sg.Exit(s=(5,1), font=func.fonts.button)]
+#     ]
+#     return layout
 
 
 
@@ -149,15 +170,15 @@ while True:
     if ev1 == sg.WIN_CLOSED or ev1 == 'Exit':
         break
 
-    if not winReceiptCreatorActive and ev1 == 'New':
+    elif not winReceiptCreatorActive and ev1 == 'New':
         winReceiptCreatorActive = True
 
         winReceiptCreator = sg.Window('New receipt', ReceiptCreate(itemList), font = ("Helvetica", "11", "bold"))
     
-    if not winLoadActive and ev1 == "Load":
+    elif not winLoadActive and ev1 == "Load":
         winLoadActive = True
 
-        winLoad = sg.Window('Load old receipt', Load(), font = ("Helvetica", "11", "bold"))
+        winLoad = sg.Window('Load receipt', Load(), font = ("Helvetica", "11", "bold"))
 
 
     #Window load receipt_____________________________________________________________________________
@@ -168,28 +189,26 @@ while True:
             winLoadActive = False
             winLoad.close()
 
-        if evLoad == "listboxSelect":
+        elif evLoad == "listboxSelect":
             id = int(valsLoad["listboxSelect"][0].split(".")[0])-1
-
-            contribToPay_string = ""
-            for key, value in receipts[id]["contributorToPay"].items():
-                contribToPay_string = f'{contribToPay_string}\n\t{key} is to pay {value} kr'
-
-            item_string = ""
-            for item in receipts[id]["items"]:
-                item_string =  f'{item_string}\n\tName: {item["name"]} \n\tPrice: {item["price"]} \n\tDiscount: {item["discount"]} \n\tContributors: {item["contributors"]} \n'
-
-            receiptToShow = f'Date: {receipts[id]["date"]} \nStore: {receipts[id]["store"]} \nPaid by: {receipts[id]["paidBy"]} \nSubtotal: {receipts[id]["subtotal"]} kr \nContributors to pay: {contribToPay_string} \nItems: {item_string}'
+            receiptToShow = func.ReturnItem(id)
             winLoad["showReceipt"].update(receiptToShow)
 
 
-        if evLoad == "Load all receipts":
-            receipts = func.PullAll()
-            listForListbox = []
-            for entry in receipts:
-                listItem = f'{entry["id"]}.{entry["date"]}_{entry["store"]}_{entry["subtotal"]}'
-                listForListbox.append(listItem)
+        elif evLoad == "Load all receipts":
+            listForListbox = func.LoadAll()
             winLoad["listboxSelect"].update(values = listForListbox)
+            winLoad["didYouLoad"].update("Select receipt to view it")
+            
+
+        elif evLoad == "Apply filter":
+            listForListbox = func.FilterYMS(valsLoad["month"],valsLoad["store"])
+            if listForListbox == []:
+                sg.popup("Sorry, no receips were found \nIf you belive this to be a mistake, please check if your spelling and the month requested \n\nIf you wish to veiw all receips, press 'Load all receipts'", button_type=sg.POPUP_BUTTONS_OK, title = "No receipts")
+
+            winLoad["listboxSelect"].update(values = listForListbox)
+            winLoad["didYouLoad"].update("Select receipt to view it")
+                    
 
                 
 
@@ -214,17 +233,17 @@ while True:
             winReceiptCreatorActive  = False
             winReceiptCreator.close()
 
-        if ev2 == "Add":
+        elif ev2 == "Add":
             contributors.append(vals2["contrib"])
             winReceiptCreator["-OUTPUT-"].update(contributors)
             winReceiptCreator['contrib'].Update('')
 
-        if ev2 == "Create receipt":
+        elif ev2 == "Create receipt":
             if receipt == None:
                 showContrib = [vals2["paidBy"], *contributors]
                 receipt = func.Basics(vals2["date"][:10],vals2["store"], vals2["paidBy"], showContrib)
 
-                winReceiptCreator["ToPay"].update(receipt.contributorsToPay[0])
+                winReceiptCreator["ToPay"].update(receipt.contributorToPay)
                 winReceiptCreator["-OUTPUT2-"].update(f"Receipt is now active\nBegin adding items")
                 winReceiptCreator["Create receipt"].update("Update receipt")
                 winReceiptCreator["Finalize receipt"].update(disabled = False)
@@ -242,33 +261,37 @@ while True:
                     if receipt.paidBy != vals2["paidBy"]:
                         contributors.append(receipt.paidBy)
                         receipt.paidBy = vals2["paidBy"]
-                        receipt.contributorsToPay[0][receipt.paidBy] = 0
+                        receipt.contributorToPay[receipt.paidBy] = 0
                     for name in newContribs:
-                        receipt.contributorsToPay[0][name] = 0
+                        receipt.contributorToPay[name] = 0
                     showContrib = [vals2["paidBy"], *contributors]
                     winReceiptCreator["-OUTPUT-"].update(contributors)
-                    winReceiptCreator["ToPay"].update(receipt.contributorsToPay[0])
+                    winReceiptCreator["ToPay"].update(receipt.contributorToPay)
 
 
         
-        if ev2 == "Finalize receipt":
+        elif ev2 == "Finalize receipt":
             receipt.subtotal = subtotal
             item_string = ""
             contribToPay_string = ""
             toRemove = []
-            for contribName in receipt.contributorsToPay[0]:
-                if receipt.contributorsToPay[0][contribName] == 0:
+            for contribName in receipt.contributorToPay:
+                if receipt.contributorToPay[contribName] == 0:
                     toRemove.append(contribName)
                 else:
-                    contribToPay_string = f"{contribToPay_string}\n\t{contribName} is to pay {receipt.contributorsToPay[0][contribName]} kr"
+                    contribToPay_string = f"{contribToPay_string}\n\t{contribName} is to pay {receipt.contributorToPay[contribName]} kr"
             if toRemove != []: 
                 for useless in toRemove:
-                    receipt.contributorsToPay[0].pop(useless)
+                    receipt.contributorToPay.pop(useless)
             for item in receipt.items:
                 item_string =  f'{item_string}\n\tName: {item.name} \n\tPrice: {item.price} \n\tDiscount: {item.discount} \n\tContributors: {item.contributors} \n'
             answer = sg.popup_scrolled(f"Is the following information correct?: \nDate: {receipt.date} \nStore: {receipt.store} \nPaid by: {receipt.paidBy} \nSubtotal: {receipt.subtotal} kr \nContributors to pay: {contribToPay_string} \nItems: {item_string}",yes_no= True, title= "Overview")
             if answer == "Yes":
-                sg.popup("This feature isnt ready yet, receipt deleted.", button_type = sg.POPUP_BUTTONS_OK, title = "Woops :(")
+                for id in range(len(receipt.items)):
+                    receipt.items[id] = receipt.items[id].__dict__
+                receiptDict = receipt.__dict__
+                func.WriteTo(receiptDict)
+                sg.popup("Receipt saved, closing receipt creator", button_type = sg.POPUP_BUTTONS_OK, title = "Success!")
                 contributors = []
                 receipt = None
                 i = 0
@@ -279,17 +302,17 @@ while True:
                 winReceiptCreatorActive  = False
                 itemList = []
                 winReceiptCreator.close()
-            if answer == "No":
+            elif answer == "No":
                 if toRemove != []: 
                     for useless in toRemove:
-                        receipt.contributorsToPay[0][useless] = 0
+                        receipt.contributorToPay[useless] = 0
         
-        if ev2 == "Add item" and not winItemCreatorActive:
+        elif ev2 == "Add item" and not winItemCreatorActive:
             winItemCreatorActive = True
             checkboxesItemCreator, layoutAddItem = ItemAdd(showContrib)
             winItemCreator = sg.Window("Item creator", layoutAddItem, font = ("Helvetica", "11", "bold"))
         
-        if ev2 == "Edit item" and not winItemCreatorActive:
+        elif ev2 == "Edit item" and not winItemCreatorActive:
             if len(vals2["ItemList"]) == 0:
                 sg.popup("No item was selected \n\nPlease select an item from the list", title = "ERROR no item selected")
             else: 
@@ -312,7 +335,7 @@ while True:
                 winItemCreator.close()
 
             
-            if ev3 == "Finish":
+            elif ev3 == "Finish":
                 if vals3["discount"] == '':
                     vals3["discount"] = 0
 
@@ -336,7 +359,7 @@ while True:
                         sharedPrice = priceTotal/len(newContrib)
                         subtotal += priceTotal
                         for contrib in newContrib:
-                            receipt.contributorsToPay[0][contrib] += round(sharedPrice,1)
+                            receipt.contributorToPay[contrib] += round(sharedPrice,1)
 
                         i += 1
 
@@ -344,7 +367,7 @@ while True:
 
                         winReceiptCreator["ItemList"].update(values = itemList)
                         winReceiptCreator["subtotal"].update(subtotal)
-                        winReceiptCreator["ToPay"].update(receipt.contributorsToPay[0])
+                        winReceiptCreator["ToPay"].update(receipt.contributorToPay)
                         winReceiptCreator["Edit item"].update(disabled = False)
 
                         winItemCreatorActive  = False
@@ -354,7 +377,7 @@ while True:
                     sg.popup("Invalid characters in number exclusive fields \n\nPlease check that the fields price and discount does not contain any of the following: \n\tLetters \n\tCommas, use . instead \n\tOther non numbers", title = "ERROR invalid entry")
 
             
-            if ev3 == "Update":
+            elif ev3 == "Update":
                 if vals3["discountEd"] == '':
                     vals3["discountEd"] = 0
 
@@ -377,7 +400,7 @@ while True:
                     priceDiff = newPrice - oldPriceTotal
 
                     for contrib in oldContrib:
-                        receipt.contributorsToPay[0][contrib] -= round(oldSharedPrice,1)
+                        receipt.contributorToPay[contrib] -= round(oldSharedPrice,1)
 
                     receipt.items[itemIndex] = (func.Item(vals3["nameEd"], vals3["priceEd"],vals3["discountEd"], newContrib))
 
@@ -386,13 +409,13 @@ while True:
                     subtotal += priceDiff
 
                     for contrib in newContrib:
-                        receipt.contributorsToPay[0][contrib] += round(newSharedPrice,1)
+                        receipt.contributorToPay[contrib] += round(newSharedPrice,1)
 
                     itemList[itemIndex] = [itemIndex + 1,vals3["nameEd"], vals3["priceEd"] ,vals3["discountEd"], newContrib]
 
                     winReceiptCreator["ItemList"].update(values = itemList)
                     winReceiptCreator["subtotal"].update(subtotal)
-                    winReceiptCreator["ToPay"].update(receipt.contributorsToPay[0])
+                    winReceiptCreator["ToPay"].update(receipt.contributorToPay)
 
                     winItemCreatorActive  = False
                     winItemCreator.close()

@@ -1,0 +1,390 @@
+[
+    {
+        "id": 1,
+        "store": "Netto",
+        "date": "2023-01-17",
+        "paidBy": "Thea",
+        "items": [
+            {
+                "name": "Pose",
+                "price": 5.25,
+                "discount": null,
+                "contributors": [
+                    "Thea",
+                    "Mikkel"
+                ]
+            },
+            {
+                "name": "Grillpælser",
+                "price": 45.0,
+                "discount": 0.0,
+                "contributors": [
+                    "Thea",
+                    "Mikkel"
+                ]
+            },
+            {
+                "name": "Burger dressing",
+                "price": 18.0,
+                "discount": 0.0,
+                "contributors": [
+                    "Thea",
+                    "Mikkel"
+                ]
+            },
+            {
+                "name": "Mikrobælge popcorn",
+                "price": 8.95,
+                "discount": 0.0,
+                "contributors": [
+                    "Thea",
+                    "Mikkel"
+                ]
+            },
+            {
+                "name": "Kædpælse",
+                "price": 16.95,
+                "discount": 4.95,
+                "contributors": [
+                    "Mikkel"
+                ]
+            },
+            {
+                "name": "Kyllingepælse",
+                "price": 16.95,
+                "discount": 4.95,
+                "contributors": [
+                    "Mikkel"
+                ]
+            },
+            {
+                "name": "Oksespegepælse",
+                "price": 19.95,
+                "discount": 7.95,
+                "contributors": [
+                    "Thea"
+                ]
+            },
+            {
+                "name": "Hel kylling 1350g",
+                "price": 35.0,
+                "discount": 0.0,
+                "contributors": [
+                    "Thea",
+                    "Mikkel"
+                ]
+            }
+        ],
+        "subtotal": 148.2,
+        "contributorToPay": {
+            "Mikkel": 80.1,
+            "Thea": 68.1
+        }
+    },
+    {
+        "id": 2,
+        "store": "Super Brugsen",
+        "date": "2023-01-16",
+        "paidBy": "Mikkel",
+        "items": [
+            {
+                "name": "Agurk",
+                "price": 9.0,
+                "discount": 4.0,
+                "contributors": [
+                    "Thea",
+                    "Mikkel"
+                ]
+            },
+            {
+                "name": "Læg",
+                "price": 9.0,
+                "discount": 0.0,
+                "contributors": [
+                    "Thea",
+                    "Mikkel"
+                ]
+            },
+            {
+                "name": "Champignon",
+                "price": 15.75,
+                "discount": 0.0,
+                "contributors": [
+                    "Thea",
+                    "Mikkel"
+                ]
+            },
+            {
+                "name": "Mærbrad",
+                "price": 32.48,
+                "discount": 0.0,
+                "contributors": [
+                    "Thea",
+                    "Mikkel"
+                ]
+            },
+            {
+                "name": "Mærbrad",
+                "price": 41.88,
+                "discount": 0.0,
+                "contributors": [
+                    "Thea",
+                    "Mikkel"
+                ]
+            },
+            {
+                "name": "Cup noodles",
+                "price": 21.95,
+                "discount": 11.95,
+                "contributors": [
+                    "Mikkel"
+                ]
+            },
+            {
+                "name": "Cup noodles",
+                "price": 21.95,
+                "discount": 11.95,
+                "contributors": [
+                    "Mikkel"
+                ]
+            },
+            {
+                "name": "Cup noodles x2",
+                "price": 43.9,
+                "discount": 23.9,
+                "contributors": [
+                    "Thea"
+                ]
+            },
+            {
+                "name": "AMA Flæde",
+                "price": 21.0,
+                "discount": 0.0,
+                "contributors": [
+                    "Thea",
+                    "Mikkel"
+                ]
+            },
+            {
+                "name": "Crunch musli",
+                "price": 17.25,
+                "discount": 0.0,
+                "contributors": [
+                    "Thea",
+                    "Mikkel"
+                ]
+            },
+            {
+                "name": "Kartoffelmose",
+                "price": 16.0,
+                "discount": 0.0,
+                "contributors": [
+                    "Thea",
+                    "Mikkel"
+                ]
+            },
+            {
+                "name": "Oksebouillon",
+                "price": 9.25,
+                "discount": 1.74,
+                "contributors": [
+                    "Thea",
+                    "Mikkel"
+                ]
+            },
+            {
+                "name": "Hænsebouillon",
+                "price": 9.25,
+                "discount": 1.76,
+                "contributors": [
+                    "Thea",
+                    "Mikkel"
+                ]
+            },
+            {
+                "name": "Frugtstænger",
+                "price": 39.9,
+                "discount": 9.92,
+                "contributors": [
+                    "Thea"
+                ]
+            },
+            {
+                "name": "Muslibar",
+                "price": 13.5,
+                "discount": 3.5,
+                "contributors": [
+                    "Thea"
+                ]
+            },
+            {
+                "name": "Muslibar",
+                "price": 13.5,
+                "discount": 3.5,
+                "contributors": [
+                    "Thea"
+                ]
+            }
+        ],
+        "subtotal": 263.34,
+        "contributorToPay": {
+            "Mikkel": 99.68,
+            "Thea": 156.66
+        }
+    },
+    {
+        "id": 3,
+        "store": "Super Brugsen",
+        "date": "2023-01-14",
+        "paidBy": "Thea",
+        "items": [
+            {
+                "name": "Pepsi Max",
+                "price": 18.75,
+                "discount": 3.75,
+                "contributors": [
+                    "Thea"
+                ]
+            },
+            {
+                "name": "Pant",
+                "price": 3.0,
+                "discount": 0.0,
+                "contributors": [
+                    "Thea"
+                ]
+            },
+            {
+                "name": "Ketchup",
+                "price": 20.25,
+                "discount": 0.0,
+                "contributors": [
+                    "Mikkel",
+                    "Thea"
+                ]
+            },
+            {
+                "name": "Æbler 1kg",
+                "price": 10.0,
+                "discount": 0.0,
+                "contributors": [
+                    "Mikkel",
+                    "Thea"
+                ]
+            },
+            {
+                "name": "Grovhakket leverpostej",
+                "price": 34.95,
+                "discount": 0.0,
+                "contributors": [
+                    "Thea"
+                ]
+            },
+            {
+                "name": "Bananer",
+                "price": 16.25,
+                "discount": 0.0,
+                "contributors": [
+                    "Mikkel",
+                    "Thea"
+                ]
+            },
+            {
+                "name": "Coop Cola",
+                "price": 7.33,
+                "discount": 0.0,
+                "contributors": [
+                    "Mikkel"
+                ]
+            },
+            {
+                "name": "Pant",
+                "price": 3.0,
+                "discount": 0.0,
+                "contributors": [
+                    "Mikkel"
+                ]
+            }
+        ],
+        "subtotal": 109.78,
+        "contributorToPay": {
+            "Mikkel": 33.58,
+            "Thea": 76.2
+        }
+    },
+    {
+        "date": "2023-01-20",
+        "store": "Netto",
+        "paidBy": "Mikkel",
+        "subtotal": 149.95,
+        "contributorToPay": {
+            "Mikkel": 30.0,
+            "Thea": 120.0
+        },
+        "items": [
+            {
+                "name": "Pølser",
+                "price": 45.0,
+                "discount": 0.0,
+                "contributors": [
+                    "Mikkel",
+                    "Thea"
+                ]
+            },
+            {
+                "name": "Smør",
+                "price": 14.95,
+                "discount": 0.0,
+                "contributors": [
+                    "Mikkel",
+                    "Thea"
+                ]
+            },
+            {
+                "name": "Pepsi 24 pak",
+                "price": 102.0,
+                "discount": 12.0,
+                "contributors": [
+                    "Thea"
+                ]
+            }
+        ]
+    },
+    {
+        "date": "2023-02-09",
+        "store": "Super Brugsen",
+        "paidBy": "Thea",
+        "subtotal": 47.95,
+        "contributorToPay": {
+            "Thea": 18.0,
+            "Mikkel": 30.0
+        },
+        "items": [
+            {
+                "name": "Chips",
+                "price": 20.0,
+                "discount": 0.0,
+                "contributors": [
+                    "Mikkel"
+                ]
+            },
+            {
+                "name": "Popcorn",
+                "price": 7.95,
+                "discount": 0.0,
+                "contributors": [
+                    "Thea"
+                ]
+            },
+            {
+                "name": "Frysepølsehorn",
+                "price": 34.95,
+                "discount": 14.95,
+                "contributors": [
+                    "Thea",
+                    "Mikkel"
+                ]
+            }
+        ]
+    }
+]

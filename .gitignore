@@ -2,3 +2,5 @@ venv
 __pycache__
 Main.exe
 APIPull.py
+Test.ipynb
+PullStuffBackup.JSON
