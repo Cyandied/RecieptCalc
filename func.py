@@ -1,5 +1,12 @@
 
-# import json
+import json
+import requests
+
+class fonts:
+    header = ("","20", "bold")
+    body = ("","10","")
+    button = ("","10", "bold")
+    input = ("","10","italic")
 
 class Basics:
     def __init__(self, date, store, paidBy, contributers):
@@ -28,6 +35,12 @@ def IsFloat(value):
         return True
     except Exception:
         return False
+
+
+def PullAll():
+    with open('PullStuff.txt', 'r') as f:
+        receipts = json.loads(f.read())
+    return receipts
 
 # def CreateFile(date, store, payer):
 #     f = open(f"Receipt\{str(date)}_{store}.json", "x")
