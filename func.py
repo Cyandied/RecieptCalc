@@ -1,9 +1,5 @@
 
 # import json
-nums = [1,2,3]
-
-nums_squared = [num**2 for num in nums]
-
 
 class Basics:
     def __init__(self, date, store, paidBy, contributers):
@@ -12,8 +8,10 @@ class Basics:
         self.paidBy = paidBy
         self.subtotal = 0
         self.contributersToPay = []
+        tempContri = {}
         for contributer in contributers:
-            self.contributersToPay.append({contributer : 0})
+            tempContri[contributer] = 0
+        self.contributersToPay.append(tempContri)
         self.items = []
 
 class Item:
