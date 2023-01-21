@@ -1,9 +1,23 @@
 
 import json
 import requests
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 relavantFile = 'PullStuff.JSON'
 URL = "http://192.168.1.126/api/"
+
+storeColors = {
+    "netto": "gold",
+    "7-eleven":"forestgreen",
+    "super brugsen":"firebrick",
+    "coop 365":"limegreen",
+    "føtex":"navy",
+    "bilka":"dodgerblue",
+    "lidl":"cornflowerblue",
+    "aldi":"paleturquoise",
+}
 
 class fonts:
     header = ("","20", "bold")
@@ -163,3 +177,67 @@ def GenerateAll():
     for i in range(1,13):
         monthlyData[str(i)] = GenByMonth(i)
     return monthlyData
+
+size = (10,6)
+
+def PlotForYear(year):
+    with open(f'ReceiptsFor{year}.JSON', 'r') as f:
+        dataForYear = json.loads(f.read())
+    fig, ax = plt.subplots(figsize = size)
+    subtotalYear = 0
+    colors = []
+    months = np.arange(1,13)
+    viableMonths = []
+    dataForMonthByStore = {}
+    for month in months:
+        monthData = dataForYear[str(month)]
+        if monthData != False:
+            viableMonths.append(month)
+            allStores = monthData.keys()
+            for store in allStores:
+                if store not in dataForMonthByStore.keys():
+                    dataForMonthByStore[store] = [0,0,0,0,0,0,0,0,0,0,0,0]
+                    colors.append(storeColors[store.lower()])
+                monthTotal = np.sum(monthData[store])
+                dataForMonthByStore[store][month-1] = monthTotal
+                subtotalYear += monthTotal
+
+    ax.stackplot(months, dataForMonthByStore.values(), labels = dataForMonthByStore.keys(), colors=colors)
+    ax.set_xlabel("Month")
+    ax.set_ylabel("Money spent [kr.]")
+    ax.set_xticks(months)
+    ax.legend()
+    return fig, viableMonths, subtotalYear/12
+
+def PlotForMonth(month,year):
+    with open(f'ReceiptsFor{year}.JSON', 'r') as f:
+        dataForYear = json.loads(f.read())
+    subtotalMonth = 0
+    colors = []
+    fig,ax = plt.subplots(figsize = size)
+    monthData = dataForYear[month]
+    days = np.arange(1,MonthDates[month]+1)
+    for store in monthData.keys():
+        colors.append(storeColors[store.lower()])
+    ax.stackplot(days, monthData.values(), labels = monthData.keys(), colors = colors)
+    for entry in monthData.values():
+        subtotalMonth += np.sum(entry)
+
+    ax.set_xlabel("Day")
+    ax.set_ylabel("Money spent [kr.]")
+    ax.set_xticks(days)
+    ax.legend()
+    return fig, subtotalMonth
+
+def draw_figure(canvas, figure):
+    figure_canvas_agg = FigureCanvasTkAgg(figure, canvas)
+    figure_canvas_agg.draw()
+    figure_canvas_agg.get_tk_widget().pack(side='top', fill='both', expand=0)
+    return figure_canvas_agg
+
+def delete_figure(figure_canvas_agg):
+    figure_canvas_agg.get_tk_widget().destroy()
+
+def EnableUpdate(viableMonths,win):
+    for month in viableMonths:
+        win[str(month)].update(disabled = False)

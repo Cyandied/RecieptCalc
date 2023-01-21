@@ -17,6 +17,7 @@ itemIndex = 0
 subtotal = 0
 showContrib = None
 itemList = []
+prevFig = None
 
 sg.theme('DarkGrey11')
 
@@ -40,7 +41,7 @@ def Start():
         [sg.Text('\t\tNew receipt:\t'), sg.Button("New", font = func.fonts.button, size=(7,1))],
         [sg.Text('\t\tLoad receipt:\t'), sg.Button("Load", font = func.fonts.button, size=(7,1))],
         [sg.Text('\t\tView statistics:\t'), sg.Button("Data", font = func.fonts.button, size=(7,1))],
-        [sg.Button('Exit',font = func.fonts.button, size=(7,1))]
+        [sg.Button('Exit',font = func.fonts.button, size=(5,1))]
     ]
     return layout
 
@@ -127,22 +128,24 @@ def Load():
 
 def Stats():
     layoutL = [
-        [sg.Text("You havent begun to show data")],
-        [sg.Canvas(values = [], s=(40,17), key="listboxSelect", enable_events=True, font = func.fonts.body)]
+        [sg.Canvas(s=(1000,600), key="canvas")],
+        [sg.Button("Load data", font = func.fonts.button,s=(10,1)),sg.T("",s = (30,1)), sg.Button("Generate data", font = func.fonts.button,s=(14,1))],
+        [sg.Exit(s=(5,1), font=func.fonts.button)]
     ]
 
     layoutR = [
-        [sg.Text("Filter for month and year: "),sg.Spin([i for i in range(2023,2025)],key = "year",font=func.fonts.input, size=(10,1), initial_value=2023),sg.Spin([j for j in range(0,13)],key = "month",font=func.fonts.input, size=(10,1), initial_value=0)],
-        [sg.Text("Filter for store:\t"), sg.In(key = "store",font=func.fonts.input, size=(33,1))],
-        [sg.Text("Selected item:", font = func.fonts.body)],
-        [sg.T(s=(5,1)),sg.Multiline(key = "showReceipt", s=(43,12), font = func.fonts.body)],
-        [sg.T(s=(5,1)),sg.Button("Load all receipts", s=(15,1), font=func.fonts.button),sg.T("         or         ", font=func.fonts.body, justification = "c"),sg.Button("Apply filter", s=(10,1), font=func.fonts.button)]
+        [sg.Text("Please select a year:"),sg.Spin([i for i in range(2023,2025)],key = "year",font=func.fonts.input, size=(10,1), initial_value=2023)],
+        [sg.Text("Select month:")],
+        [sg.Button(str(k+1), font = func.fonts.button, key = str(k+1), disabled=True, s = (4,1)) for k in range(6)],
+        [sg.Button(str(l+1), font = func.fonts.button, key = str(l+1), disabled=True, s = (4,1)) for l in range(6,12)],
+        [sg.Button("Show breakdown for entire year", font = func.fonts.button, s=(36,1), key = "evalYear")],
+        [sg.T("Average spend per month:\t\t", font = func.fonts.body),sg.T("0", key = "avYear", font = func.fonts.input)],
+        [sg.T("Average spend for selected month:\t", font = func.fonts.body), sg.T("0", key = "avMonth", font = func.fonts.input)]
     ]
 
     layout = [
-        [sg.Text("Welcome to the receipt loader!",font = func.fonts.header)],
-        [sg.Col(layoutL),sg.Col(layoutR)],
-        [sg.Exit(s=(5,1), font=func.fonts.button)]
+        [sg.Text("Welcome to your statistics!",font = func.fonts.header)],
+        [sg.Col(layoutL),sg.Col(layoutR)]
     ]
     return layout
 
@@ -180,6 +183,58 @@ while True:
         winLoadActive = True
 
         winLoad = sg.Window('Load receipt', Load(), font = ("Helvetica", "11", "bold"))
+    
+    elif not winDataActive and ev1 == "Data":
+        winDataActive = True
+
+        winData = sg.Window('Statistics', Stats(), font = ("Helvetica","11","bold")).Finalize()
+
+    #Window Data_____________________________________________________________________________________________________________
+    if winDataActive:
+        evData, valsData = winData.read(timeout=100)
+
+        if evData == sg.WIN_CLOSED or evData == "Exit":
+            winDataActive = False
+            winData.close()
+        
+        if evData == "Generate data":
+            answer = sg.popup_yes_no("You are about to generate all data for all receipt \nThe process might take a bit \n\nDid you mean to do this?",title="Generate data")
+            if answer == "Yes":
+                with open(f'ReceiptsFor{valsData["year"]}.JSON',"w") as f:
+                    try:
+                        f.write(json.dumps(func.GenerateAll()))
+                        sg.popup("Data sucessfully generated",title = "Data generated")
+                    except Exception:
+                        sg.popup("Data couldnt generate",title = "ERROR data not generated")
+                
+
+        if evData == "Load data":
+            if prevFig != None:
+                func.delete_figure(prevFig)
+            winData["canvas"]._TKcanvas = None
+            figure, viableMonths, meanMonth = func.PlotForYear(valsData["year"])
+            prevFig = func.draw_figure(winData['canvas'].TKCanvas, figure)
+            func.EnableUpdate(viableMonths,winData)
+            winData["avYear"].update(round(meanMonth,1))
+            winData["avMonth"].update(0)
+        
+        if evData == "evalYear":
+            func.delete_figure(prevFig)
+            winData["canvas"]._TKcanvas = None
+            figure, viableMonths, _ = func.PlotForYear(valsData["year"])
+            prevFig = func.draw_figure(winData['canvas'].TKCanvas, figure)
+            func.EnableUpdate(viableMonths,winData)
+            winData["avMonth"].update(0)
+            
+        
+
+        if evData in func.MonthDates.keys():
+            month = evData
+            func.delete_figure(prevFig)
+            figure, totMonth = func.PlotForMonth(evData, valsData["year"])
+            prevFig = func.draw_figure(winData['canvas'].TKCanvas, figure)
+            winData["avMonth"].update(round(totMonth,1))
+
 
 
     #Window load receipt_____________________________________________________________________________
