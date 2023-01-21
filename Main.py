@@ -20,12 +20,6 @@ itemList = []
 
 sg.theme('DarkGrey11')
 
-class fonts:
-    header = ("","20", "bold")
-    body = ("","10","")
-    button = ("","10", "bold")
-    input = ("","10","italic")
-
 
 
 #Layout functions and related______________________________________________________
@@ -33,62 +27,62 @@ class fonts:
 def SayIfItems(rcpt = receipt):
 
     if rcpt == None:
-        return sg.Text("No items to display", font = fonts.body)
+        return sg.Text("No items to display", font = func.fonts.body)
     elif len(rcpt.item) == 0: 
-        return sg.Text("No items to display", font = fonts.body)
+        return sg.Text("No items to display", font = func.fonts.body)
     else:
-        return sg.Text("Items:", font = fonts.body)
+        return sg.Text("Items:", font = func.fonts.body)
 
 
 def Start():
     layout = [
-        [sg.Text('Welcome to the receipt calculator!', font = fonts.header, justification="c")],
-        [sg.Text('\t\tNew receipt:\t'), sg.Button("New", font = fonts.button, size=(7,1))],
-        [sg.Text('\t\tLoad receipt:\t'), sg.Button("Load", font = fonts.button, size=(7,1))],
-        [sg.Text('\t\tView statistics:\t'), sg.Button("Data", font = fonts.button, size=(7,1))],
-        [sg.Button('Exit',font = fonts.button, size=(7,1))]
+        [sg.Text('Welcome to the receipt calculator!', font = func.fonts.header, justification="c")],
+        [sg.Text('\t\tNew receipt:\t'), sg.Button("New", font = func.fonts.button, size=(7,1))],
+        [sg.Text('\t\tLoad receipt:\t'), sg.Button("Load", font = func.fonts.button, size=(7,1))],
+        [sg.Text('\t\tView statistics:\t'), sg.Button("Data", font = func.fonts.button, size=(7,1))],
+        [sg.Button('Exit',font = func.fonts.button, size=(7,1))]
     ]
     return layout
 
 def ReceiptCreate(itemList):
     layout = [
-    [sg.Text('Please input a date:\t'), sg.CalendarButton("Calendar", target = "date", font = fonts.button, size=(9,1)), sg.In(key = "date",font=fonts.input, size=(40,1))],
-    [sg.Text("Please input a store:\t"), sg.InputText(key = "store",font=fonts.input,size=(53,1))],
-    [sg.Text("Please input who paid:\t"), sg.InputText(key = "paidBy",font=fonts.input,size=(53,1))],
-    [sg.Text("Write name of contributor:\t"), sg.InputText(key = "contrib",font=fonts.input), sg.Button("Add", font = fonts.button, size=(5,1))],
-    [sg.Text("List of contributors, not including who paid: ", font=fonts.body), sg.Text(key = "-OUTPUT-", font=fonts.body)],
-    [sg.Button("Create receipt", key = "Create receipt", font = fonts.button, size=(13,1)), sg.Text(key = "-OUTPUT2-", font=fonts.body)],
-    [sg.Button("Add item", font = fonts.button, disabled=True, size=(9,1))],
-    [SayIfItems(), sg.Button("Edit item", font = fonts.button, disabled=True, size=(9,1))],
-    [sg.Listbox(values = itemList, size= (80,6), key = "ItemList", font=fonts.body)],
-    [sg.Text("Contibuters are to pay:", font=fonts.body), sg.Text("No contributors",key = "ToPay",font=fonts.input), sg.Text("Subtotal is:", font=fonts.body), sg.Text(subtotal,key = "subtotal",font=fonts.input)],
-    [sg.Button('Exit', font = fonts.button, size=(5,1)), sg.Button("Finalize receipt", font = fonts.button, disabled=True, size=(15,1))]
+    [sg.Text('Please input a date:\t'), sg.CalendarButton("Calendar", target = "date", font = func.fonts.button, size=(9,1)), sg.In(key = "date",font=func.fonts.input, size=(40,1))],
+    [sg.Text("Please input a store:\t"), sg.InputText(key = "store",font=func.fonts.input,size=(53,1))],
+    [sg.Text("Please input who paid:\t"), sg.InputText(key = "paidBy",font=func.fonts.input,size=(53,1))],
+    [sg.Text("Write name of contributor:\t"), sg.InputText(key = "contrib",font=func.fonts.input), sg.Button("Add", font = func.fonts.button, size=(5,1))],
+    [sg.Text("List of contributors, not including who paid: ", font=func.fonts.body), sg.Text(key = "-OUTPUT-", font=func.fonts.body)],
+    [sg.Button("Create receipt", key = "Create receipt", font = func.fonts.button, size=(13,1)), sg.Text(key = "-OUTPUT2-", font=func.fonts.body)],
+    [sg.Button("Add item", font = func.fonts.button, disabled=True, size=(9,1))],
+    [SayIfItems(), sg.Button("Edit item", font = func.fonts.button, disabled=True, size=(9,1))],
+    [sg.Listbox(values = itemList, size= (80,6), key = "ItemList", font=func.fonts.body)],
+    [sg.Text("Contibuters are to pay:", font=func.fonts.body), sg.Text("No contributors",key = "ToPay",font=func.fonts.input), sg.Text("Subtotal is:", font=func.fonts.body), sg.Text(subtotal,key = "subtotal",font=func.fonts.input)],
+    [sg.Button('Exit', font = func.fonts.button, size=(5,1)), sg.Button("Finalize receipt", font = func.fonts.button, disabled=True, size=(15,1))]
 ]
     return layout
 
 def ItemAdd(showContrib):
     col = [
-        [sg.Text("Welcome to the item creator!", font=fonts.header)],
-        [sg.Text("Name of item\t"), sg.Input(key = "name", font=fonts.input)],
-        [sg.Text("Price of item\t"), sg.Input(key = "price", font=fonts.input)],
-        [sg.Text("Discount on item\t"), sg.Input(key = "discount", font=fonts.input)]
+        [sg.Text("Welcome to the item creator!", font=func.fonts.header)],
+        [sg.Text("Name of item\t"), sg.Input(key = "name", font=func.fonts.input)],
+        [sg.Text("Price of item\t"), sg.Input(key = "price", font=func.fonts.input)],
+        [sg.Text("Discount on item\t"), sg.Input(key = "discount", font=func.fonts.input)]
     ]
-    checkboxesItemCreator = [sg.Checkbox(x, font = fonts.body) for x in showContrib]
+    checkboxesItemCreator = [sg.Checkbox(x, font = func.fonts.body) for x in showContrib]
 
     layout = [
         [sg.Column(col)],
         [sg.Text("Check off contributors to pay for this item:")],
         [checkboxesItemCreator],
-        [sg.Button("Finish", font = fonts.button), sg.Button("Cancel", font = fonts.button)]
+        [sg.Button("Finish", font = func.fonts.button), sg.Button("Cancel", font = func.fonts.button)]
     ]
     return checkboxesItemCreator,layout
 
 def ItemEdit(showContrib):
     colEdit = [
-        [sg.Text("Welcome to the item creator!", font=fonts.header)],
-        [sg.Text("Name of item\t"), sg.Input(key = "nameEd", default_text = item_from_Recipt.name, font=fonts.input)],
-        [sg.Text("Price of item\t"), sg.Input(key = "priceEd", default_text = item_from_Recipt.price, font=fonts.input)],
-        [sg.Text("Discount on item\t"), sg.Input(key = "discountEd", default_text = item_from_Recipt.discount, font=fonts.input)]
+        [sg.Text("Welcome to the item creator!", font=func.fonts.header)],
+        [sg.Text("Name of item\t"), sg.Input(key = "nameEd", default_text = item_from_Recipt.name, font=func.fonts.input)],
+        [sg.Text("Price of item\t"), sg.Input(key = "priceEd", default_text = item_from_Recipt.price, font=func.fonts.input)],
+        [sg.Text("Discount on item\t"), sg.Input(key = "discountEd", default_text = item_from_Recipt.discount, font=func.fonts.input)]
     ]
 
     defaultCheck = []
@@ -100,57 +94,61 @@ def ItemEdit(showContrib):
         defaultCheck.append(append)
         append = False
 
-    checkboxesItemEditor = [sg.Checkbox(x, default= defaultCheck[k], font = fonts.body) for k,x in enumerate(showContrib)]
+    checkboxesItemEditor = [sg.Checkbox(x, default= defaultCheck[k], font = func.fonts.body) for k,x in enumerate(showContrib)]
 
     layout = [
         [sg.Column(colEdit)],
         [sg.Text("Check off contributors to pay for this item:")],
         [checkboxesItemEditor],
-        [sg.Button("Update", font = fonts.button), sg.Button("Cancel", font = fonts.button)]
+        [sg.Button("Update", font = func.fonts.button), sg.Button("Cancel", font = func.fonts.button)]
     ]
     return checkboxesItemEditor,layout
 
 def Load():
     layoutL = [
         [sg.Text("You havent loaded anything yet", key = "didYouLoad")],
-        [sg.Listbox(values = [], s=(40,17), key="listboxSelect", enable_events=True, font = fonts.body)]
+        [sg.Listbox(values = [], s=(40,17), key="listboxSelect", enable_events=True, font = func.fonts.body)]
     ]
 
     layoutR = [
-        [sg.Text("Filter for month and year: "),sg.Spin([i for i in range(2023,2025)],key = "year",font=fonts.input, size=(10,1), initial_value=2023),sg.Spin([j for j in range(0,13)],key = "month",font=fonts.input, size=(10,1), initial_value=0)],
-        [sg.Text("Filter for store:\t"), sg.In(key = "store",font=fonts.input, size=(33,1))],
-        [sg.Text("Selected item:", font = fonts.body)],
-        [sg.T(s=(5,1)),sg.Multiline(key = "showReceipt", s=(43,12), font = fonts.body)],
-        [sg.T(s=(5,1)),sg.Button("Load all receipts", s=(15,1), font=func.fonts.button),sg.T("         or         ", font=fonts.body, justification = "c"),sg.Button("Apply filter", s=(10,1), font=func.fonts.button)]
+        [sg.Text("Filter for month and year: "),sg.Spin([i for i in range(2023,2025)],key = "year",font=func.fonts.input, size=(10,1), initial_value=2023),sg.Spin([j for j in range(0,13)],key = "month",font=func.fonts.input, size=(10,1), initial_value=0)],
+        [sg.Text("Filter for store:\t"), sg.In(key = "store",font=func.fonts.input, size=(33,1))],
+        [sg.Text("Selected item:", font = func.fonts.body)],
+        [sg.T(s=(5,1)),sg.Multiline(key = "showReceipt", s=(43,12), font = func.fonts.body)],
+        [sg.T(s=(5,1)),sg.Button("Load all receipts", s=(15,1), font=func.fonts.button),sg.T("         or         ", font=func.fonts.body, justification = "c"),sg.Button("Apply filter", s=(10,1), font=func.fonts.button)]
     ]
 
     layout = [
-        [sg.Text("Welcome to the receipt loader!",font = fonts.header)],
+        [sg.Text("Welcome to the receipt loader!",font = func.fonts.header)],
+        [sg.Col(layoutL),sg.Col(layoutR)],
+        [sg.Exit(s=(5,1), font=func.fonts.button), sg.T("", s=(12,1)),sg.Button("DELETE RECEIPT",s=(15,1), font=func.fonts.button, button_color='red')]
+    ]
+    return layout
+
+def Stats():
+    layoutL = [
+        [sg.Text("You havent begun to show data")],
+        [sg.Canvas(values = [], s=(40,17), key="listboxSelect", enable_events=True, font = func.fonts.body)]
+    ]
+
+    layoutR = [
+        [sg.Text("Filter for month and year: "),sg.Spin([i for i in range(2023,2025)],key = "year",font=func.fonts.input, size=(10,1), initial_value=2023),sg.Spin([j for j in range(0,13)],key = "month",font=func.fonts.input, size=(10,1), initial_value=0)],
+        [sg.Text("Filter for store:\t"), sg.In(key = "store",font=func.fonts.input, size=(33,1))],
+        [sg.Text("Selected item:", font = func.fonts.body)],
+        [sg.T(s=(5,1)),sg.Multiline(key = "showReceipt", s=(43,12), font = func.fonts.body)],
+        [sg.T(s=(5,1)),sg.Button("Load all receipts", s=(15,1), font=func.fonts.button),sg.T("         or         ", font=func.fonts.body, justification = "c"),sg.Button("Apply filter", s=(10,1), font=func.fonts.button)]
+    ]
+
+    layout = [
+        [sg.Text("Welcome to the receipt loader!",font = func.fonts.header)],
         [sg.Col(layoutL),sg.Col(layoutR)],
         [sg.Exit(s=(5,1), font=func.fonts.button)]
     ]
     return layout
 
-# def Stats():
-#     layoutL = [
-#         [sg.Text("You havent begun to show data")],
-#         [sg.Canvas(values = [], s=(40,17), key="listboxSelect", enable_events=True, font = fonts.body)]
-#     ]
 
-#     layoutR = [
-#         [sg.Text("Filter for month and year: "),sg.Spin([i for i in range(2023,2025)],key = "year",font=fonts.input, size=(10,1), initial_value=2023),sg.Spin([j for j in range(0,13)],key = "month",font=fonts.input, size=(10,1), initial_value=0)],
-#         [sg.Text("Filter for store:\t"), sg.In(key = "store",font=fonts.input, size=(33,1))],
-#         [sg.Text("Selected item:", font = fonts.body)],
-#         [sg.T(s=(5,1)),sg.Multiline(key = "showReceipt", s=(43,12), font = fonts.body)],
-#         [sg.T(s=(5,1)),sg.Button("Load all receipts", s=(15,1), font=func.fonts.button),sg.T("         or         ", font=fonts.body, justification = "c"),sg.Button("Apply filter", s=(10,1), font=func.fonts.button)]
-#     ]
 
-#     layout = [
-#         [sg.Text("Welcome to the receipt loader!",font = fonts.header)],
-#         [sg.Col(layoutL),sg.Col(layoutR)],
-#         [sg.Exit(s=(5,1), font=func.fonts.button)]
-#     ]
-#     return layout
+
 
 
 
@@ -193,7 +191,7 @@ while True:
             winLoad.close()
 
         elif evLoad == "listboxSelect":
-            id = int(valsLoad["listboxSelect"][0].split(".")[0])-1
+            id, receiptName, *_ = valsLoad["listboxSelect"][0].split(".")
             receiptToShow = func.ReturnItem(id)
             winLoad["showReceipt"].update(receiptToShow)
 
@@ -211,8 +209,22 @@ while True:
 
             winLoad["listboxSelect"].update(values = listForListbox)
             winLoad["didYouLoad"].update("Select receipt to view it")
-                    
 
+        elif evLoad == "DELETE RECEIPT" :
+            selectedReceipt = valsLoad["listboxSelect"]
+            if selectedReceipt != []:
+                id, receiptName, *_ = selectedReceipt[0].split(".")
+                answer = sg.popup(f'Are you sure you wish to delete the following receipt: {receiptName} ?', button_type=sg.POPUP_BUTTONS_YES_NO)
+                if answer == "Yes":
+                    if func.TryDelete(id):
+                        sg.popup("Deletion success!", button_type=sg.POPUP_BUTTONS_OK, title = "Success!")
+                        winLoad["listboxSelect"].update(values = func.LoadAll())
+                    else: sg.popup("Deletion failed!", button_type=sg.POPUP_BUTTONS_OK, title = "Failed!")
+                else: sg.popup("Receipt not deleted", title = "Cancel deletion", button_type=sg.POPUP_BUTTONS_OK)
+            else: 
+                sg.popup("No receipt to delete \nPlease select a receipt from the list first", title = "No receipt", button_type=sg.POPUP_BUTTONS_OK)
+                winLoad["listboxSelect"].update(values = func.LoadAll())
+            
                 
 
 
