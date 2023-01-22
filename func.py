@@ -4,6 +4,7 @@ import requests
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import matplotlib.lines as lines
 
 relavantFile = 'PullStuff.JSON'
 URL = "http://192.168.1.126/api/"
@@ -17,6 +18,10 @@ storeColors = {
     "bilka":"dodgerblue",
     "lidl":"cornflowerblue",
     "aldi":"paleturquoise",
+    "mcd":"tab:olive",
+    "fakta":"limegreen",
+    "ikea bistro":"royalblue",
+    "circle k":"maroon"
 }
 
 class fonts:
@@ -54,29 +59,36 @@ def IsFloat(value):
 
 
 def PullAll(id = None):
-    if id == None:
-        response_API = requests.get(URL)
-    else:
-        response_API = requests.get(URL+id)
-    data = response_API.text
-    receipts = json.loads(data)
-
-    # with open(relavantFile, 'r') as f:
-    #     receipts = json.loads(f.read())
+    try:
+        if id == None:
+            response_API = requests.get(URL,timeout=0.5)
+        else:
+            response_API = requests.get(URL+id,timeout=0.5)
+        data = response_API.text
+        receipts = json.loads(data)
+    except Exception:
+        with open(relavantFile, 'r') as f:
+            receipts = json.loads(f.read())
+            if id != None:
+                receipts = [receipt for receipt in receipts if receipt["id"] == int(id)][0]
 
     return receipts
 
 def WriteTo(reciept):
-    requests.post(URL, json = reciept)
+    try:
+        requests.post(URL, json = reciept,timeout=0.5)
+    except Exception:
+        with open(relavantFile, 'r+') as f:
+            file_data = json.load(f)
 
-    # with open(relavantFile, 'r+') as f:
-    #     file_data = json.load(f)
+            newId = file_data[-1]["id"] + 1
+            reciept["id"] = newId
 
-    #     file_data.append(reciept)
+            file_data.append(reciept)
 
-    #     f.seek(0)
+            f.seek(0)
 
-    #     json.dump(file_data, f, indent=4)
+            json.dump(file_data, f, indent=4)
 
 def LoadAll():
     receipts = PullAll()
@@ -158,8 +170,8 @@ def GenByMonth(month):
         stores = []
         for receipt in monthReceipts:
             store = receipt['store']
-            if store not in stores:
-                stores.append(store)
+            if store.lower() not in stores:
+                stores.append(store.lower())
 
         subtotals = {store: [0 for _ in range(days)] for store in stores}
 
@@ -168,7 +180,7 @@ def GenByMonth(month):
             y, m, d = receipt['date'].split('-')
             index = int(d) - 1
             subtotal = receipt['subtotal']
-            subtotals[store][index] += subtotal
+            subtotals[store.lower()][index] += subtotal
         return subtotals
     else: return False
 
@@ -202,14 +214,28 @@ def PlotForYear(year):
                 dataForMonthByStore[store][month-1] = monthTotal
                 subtotalYear += monthTotal
 
-    ax.stackplot(months, dataForMonthByStore.values(), labels = dataForMonthByStore.keys(), colors=colors)
+    yearDataVals = []
+
+    for storeBreakdown in dataForMonthByStore.values():
+        entryVals = []
+        currentBase = 0
+        for monthTotal in storeBreakdown:
+            currentBase += monthTotal
+            entryVals.append(currentBase)
+        yearDataVals.append(entryVals)
+
+    ax.stackplot(months, yearDataVals, labels = dataForMonthByStore.keys(), colors=colors)
+
+
+
+
     ax.set_xlabel("Month")
     ax.set_ylabel("Money spent [kr.]")
     ax.set_xticks(months)
-    ax.legend()
+    ax.legend(loc="upper left")
     return fig, viableMonths, subtotalYear/12
 
-def PlotForMonth(month,year):
+def PlotForMonth(month,year,budget):
     with open(f'ReceiptsFor{year}.JSON', 'r') as f:
         dataForYear = json.loads(f.read())
     subtotalMonth = 0
@@ -219,14 +245,29 @@ def PlotForMonth(month,year):
     days = np.arange(1,MonthDates[month]+1)
     for store in monthData.keys():
         colors.append(storeColors[store.lower()])
-    ax.stackplot(days, monthData.values(), labels = monthData.keys(), colors = colors)
+    monthDataVals = []
+
+    for storeBreakdown in monthData.values():
+        entryVals = []
+        currentBase = 0
+        for dayTotal in storeBreakdown:
+            currentBase += dayTotal
+            entryVals.append(currentBase)
+        monthDataVals.append(entryVals)
+
+    ax.add_artist(lines.Line2D([1, days[-1]], [float(budget), float(budget)], ls = "--", c="k", alpha = 0.5, label = "Budget limit"))
+    ax.stackplot(days, monthDataVals, labels = monthData.keys(), colors = colors, baseline = "zero")
+
+
     for entry in monthData.values():
         subtotalMonth += np.sum(entry)
 
     ax.set_xlabel("Day")
     ax.set_ylabel("Money spent [kr.]")
+    if subtotalMonth < float(budget):
+        ax.set_ylim(0,float(budget)+500)
     ax.set_xticks(days)
-    ax.legend()
+    ax.legend(loc="upper left")
     return fig, subtotalMonth
 
 def draw_figure(canvas, figure):

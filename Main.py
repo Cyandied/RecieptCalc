@@ -37,7 +37,7 @@ def SayIfItems(rcpt = receipt):
 
 def Start():
     layout = [
-        [sg.Text('Welcome to the receipt calculator!', font = func.fonts.header, justification="c")],
+        [sg.Text('Welcome to Budgeze!', font = func.fonts.header, justification="c")],
         [sg.Text('\t\tNew receipt:\t'), sg.Button("New", font = func.fonts.button, size=(7,1))],
         [sg.Text('\t\tLoad receipt:\t'), sg.Button("Load", font = func.fonts.button, size=(7,1))],
         [sg.Text('\t\tView statistics:\t'), sg.Button("Data", font = func.fonts.button, size=(7,1))],
@@ -139,8 +139,9 @@ def Stats():
         [sg.Button(str(k+1), font = func.fonts.button, key = str(k+1), disabled=True, s = (4,1)) for k in range(6)],
         [sg.Button(str(l+1), font = func.fonts.button, key = str(l+1), disabled=True, s = (4,1)) for l in range(6,12)],
         [sg.Button("Show breakdown for entire year", font = func.fonts.button, s=(36,1), key = "evalYear")],
-        [sg.T("Average spend per month:\t\t", font = func.fonts.body),sg.T("0", key = "avYear", font = func.fonts.input)],
-        [sg.T("Average spend for selected month:\t", font = func.fonts.body), sg.T("0", key = "avMonth", font = func.fonts.input)]
+        [sg.T("Average spend per month:\t", font = func.fonts.body),sg.T("0", key = "avYear", font = func.fonts.input)],
+        [sg.T("Spend for selected month:\t", font = func.fonts.body), sg.T("0", key = "avMonth", font = func.fonts.input)],
+        [sg.T("Enter budget per month:\t", font = func.fonts.body), sg.In(default_text = "3042", key = "budget", font = func.fonts.input)]
     ]
 
     layout = [
@@ -231,7 +232,7 @@ while True:
         if evData in func.MonthDates.keys():
             month = evData
             func.delete_figure(prevFig)
-            figure, totMonth = func.PlotForMonth(evData, valsData["year"])
+            figure, totMonth = func.PlotForMonth(evData, valsData["year"], valsData["budget"])
             prevFig = func.draw_figure(winData['canvas'].TKCanvas, figure)
             winData["avMonth"].update(round(totMonth,1))
 
@@ -341,7 +342,7 @@ while True:
 
         
         elif ev2 == "Finalize receipt":
-            receipt.subtotal = subtotal
+            receipt.subtotal = round(subtotal,2)
             item_string = ""
             contribToPay_string = ""
             toRemove = []

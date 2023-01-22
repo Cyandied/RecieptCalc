@@ -8,14 +8,14 @@
             {
                 "name": "Pose",
                 "price": 5.25,
-                "discount": null,
+                "discount": 0,
                 "contributors": [
                     "Thea",
                     "Mikkel"
                 ]
             },
             {
-                "name": "Grillpælser",
+                "name": "Grillp\u00ef\u00bf\u00bdlser",
                 "price": 45.0,
                 "discount": 0.0,
                 "contributors": [
@@ -33,7 +33,7 @@
                 ]
             },
             {
-                "name": "Mikrobælge popcorn",
+                "name": "Mikrob\u00ef\u00bf\u00bdlge popcorn",
                 "price": 8.95,
                 "discount": 0.0,
                 "contributors": [
@@ -42,7 +42,7 @@
                 ]
             },
             {
-                "name": "Kædpælse",
+                "name": "K\u00ef\u00bf\u00bddp\u00ef\u00bf\u00bdlse",
                 "price": 16.95,
                 "discount": 4.95,
                 "contributors": [
@@ -50,7 +50,7 @@
                 ]
             },
             {
-                "name": "Kyllingepælse",
+                "name": "Kyllingep\u00ef\u00bf\u00bdlse",
                 "price": 16.95,
                 "discount": 4.95,
                 "contributors": [
@@ -58,7 +58,7 @@
                 ]
             },
             {
-                "name": "Oksespegepælse",
+                "name": "Oksespegep\u00ef\u00bf\u00bdlse",
                 "price": 19.95,
                 "discount": 7.95,
                 "contributors": [
@@ -97,7 +97,7 @@
                 ]
             },
             {
-                "name": "Læg",
+                "name": "L\u00ef\u00bf\u00bdg",
                 "price": 9.0,
                 "discount": 0.0,
                 "contributors": [
@@ -115,7 +115,7 @@
                 ]
             },
             {
-                "name": "Mærbrad",
+                "name": "M\u00ef\u00bf\u00bdrbrad",
                 "price": 32.48,
                 "discount": 0.0,
                 "contributors": [
@@ -124,7 +124,7 @@
                 ]
             },
             {
-                "name": "Mærbrad",
+                "name": "M\u00ef\u00bf\u00bdrbrad",
                 "price": 41.88,
                 "discount": 0.0,
                 "contributors": [
@@ -157,7 +157,7 @@
                 ]
             },
             {
-                "name": "AMA Flæde",
+                "name": "AMA Fl\u00ef\u00bf\u00bdde",
                 "price": 21.0,
                 "discount": 0.0,
                 "contributors": [
@@ -193,7 +193,7 @@
                 ]
             },
             {
-                "name": "Hænsebouillon",
+                "name": "H\u00ef\u00bf\u00bdnsebouillon",
                 "price": 9.25,
                 "discount": 1.76,
                 "contributors": [
@@ -202,7 +202,7 @@
                 ]
             },
             {
-                "name": "Frugtstænger",
+                "name": "Frugtst\u00ef\u00bf\u00bdnger",
                 "price": 39.9,
                 "discount": 9.92,
                 "contributors": [
@@ -228,8 +228,8 @@
         ],
         "subtotal": 263.34,
         "contributorToPay": {
-            "Mikkel": 99.68,
-            "Thea": 156.66
+            "Thea": 156.66,
+            "Mikkel": 99.68
         }
     },
     {
@@ -264,7 +264,7 @@
                 ]
             },
             {
-                "name": "Æbler 1kg",
+                "name": "\u00ef\u00bf\u00bdbler 1kg",
                 "price": 10.0,
                 "discount": 0.0,
                 "contributors": [
@@ -313,78 +313,61 @@
         }
     },
     {
-        "date": "2023-01-20",
-        "store": "Netto",
-        "paidBy": "Mikkel",
-        "subtotal": 149.95,
-        "contributorToPay": {
-            "Mikkel": 30.0,
-            "Thea": 120.0
-        },
+        "id": 4,
+        "store": "7-eleven",
+        "date": "2023-01-21",
+        "paidBy": "Thea",
         "items": [
             {
-                "name": "Pølser",
-                "price": 45.0,
+                "name": "Club sandwich",
+                "price": 49.0,
                 "discount": 0.0,
                 "contributors": [
-                    "Mikkel",
                     "Thea"
                 ]
             },
             {
-                "name": "Smør",
-                "price": 14.95,
+                "name": "Club sandwich",
+                "price": 49.0,
                 "discount": 0.0,
                 "contributors": [
-                    "Mikkel",
-                    "Thea"
-                ]
-            },
-            {
-                "name": "Pepsi 24 pak",
-                "price": 102.0,
-                "discount": 12.0,
-                "contributors": [
-                    "Thea"
+                    "Mikkel"
                 ]
             }
-        ]
+        ],
+        "subtotal": 98.0,
+        "contributorToPay": {
+            "Mikkel": 49.0,
+            "Thea": 49.0
+        }
     },
     {
-        "date": "2023-02-09",
-        "store": "Super Brugsen",
-        "paidBy": "Thea",
-        "subtotal": 47.95,
+        "date": "2023-01-02",
+        "store": "coop 365",
+        "paidBy": "Mikkel",
+        "subtotal": 78.68,
         "contributorToPay": {
-            "Thea": 18.0,
-            "Mikkel": 30.0
+            "Mikkel": 47.5,
+            "Thea": 31.2
         },
         "items": [
             {
-                "name": "Chips",
-                "price": 20.0,
+                "name": "Mikkels andel",
+                "price": 47.48,
                 "discount": 0.0,
                 "contributors": [
                     "Mikkel"
                 ]
             },
             {
-                "name": "Popcorn",
-                "price": 7.95,
+                "name": "Theas andel",
+                "price": 31.2,
                 "discount": 0.0,
                 "contributors": [
                     "Thea"
                 ]
-            },
-            {
-                "name": "Frysepølsehorn",
-                "price": 34.95,
-                "discount": 14.95,
-                "contributors": [
-                    "Thea",
-                    "Mikkel"
-                ]
             }
-        ]
+        ],
+        "id": 5
     }
 ]
