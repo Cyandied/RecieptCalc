@@ -38,9 +38,10 @@ def SayIfItems(rcpt = receipt):
 def Start():
     layout = [
         [sg.Text('Welcome to Budgeze!', font = func.fonts.header, justification="c")],
-        [sg.Text('\t\tNew receipt:\t'), sg.Button("New", font = func.fonts.button, size=(7,1))],
-        [sg.Text('\t\tLoad receipt:\t'), sg.Button("Load", font = func.fonts.button, size=(7,1))],
-        [sg.Text('\t\tView statistics:\t'), sg.Button("Data", font = func.fonts.button, size=(7,1))],
+        [sg.Text('Your new budgeting friend!', justification="left")],
+        [sg.Text('\tNew receipt:\t'), sg.Button("New", font = func.fonts.button, size=(7,1))],
+        [sg.Text('\tLoad receipt:\t'), sg.Button("Load", font = func.fonts.button, size=(7,1))],
+        [sg.Text('\tView statistics:\t'), sg.Button("Data", font = func.fonts.button, size=(7,1))],
         [sg.Button('Exit',font = func.fonts.button, size=(5,1))]
     ]
     return layout
@@ -162,7 +163,7 @@ def Stats():
 
 #Build window____________________________________________________________________________________________
 
-winStart = sg.Window('Start', Start(), font = ("Helvetica", "11", "bold"))
+winStart = sg.Window('Start', Start(), font = ("Helvetica", "11", "bold"), icon="icon.ico")
 
 winReceiptCreatorActive = False
 winItemCreatorActive = False
@@ -178,17 +179,17 @@ while True:
     elif not winReceiptCreatorActive and ev1 == 'New':
         winReceiptCreatorActive = True
 
-        winReceiptCreator = sg.Window('New receipt', ReceiptCreate(itemList), font = ("Helvetica", "11", "bold"))
+        winReceiptCreator = sg.Window('New receipt', ReceiptCreate(itemList), font = ("Helvetica", "11", "bold"), icon="icon.ico")
     
     elif not winLoadActive and ev1 == "Load":
         winLoadActive = True
 
-        winLoad = sg.Window('Load receipt', Load(), font = ("Helvetica", "11", "bold"))
+        winLoad = sg.Window('Load receipt', Load(), font = ("Helvetica", "11", "bold"), icon="icon.ico")
     
     elif not winDataActive and ev1 == "Data":
         winDataActive = True
 
-        winData = sg.Window('Statistics', Stats(), font = ("Helvetica","11","bold")).Finalize()
+        winData = sg.Window('Statistics', Stats(), font = ("Helvetica","11","bold"), icon="icon.ico").Finalize()
 
     #Window Data_____________________________________________________________________________________________________________
     if winDataActive:
@@ -381,7 +382,7 @@ while True:
         elif ev2 == "Add item" and not winItemCreatorActive:
             winItemCreatorActive = True
             checkboxesItemCreator, layoutAddItem = ItemAdd(showContrib)
-            winItemCreator = sg.Window("Item creator", layoutAddItem, font = ("Helvetica", "11", "bold"))
+            winItemCreator = sg.Window("Item creator", layoutAddItem, font = ("Helvetica", "11", "bold"), icon="icon.ico")
         
         elif ev2 == "Edit item" and not winItemCreatorActive:
             if len(vals2["ItemList"]) == 0:
@@ -392,7 +393,7 @@ while True:
                 newContrib = []
                 winItemCreatorActive = True
                 checkboxesItemEditor, layoutEditItem = ItemEdit(showContrib)
-                winItemCreator = sg.Window("Item editor", layoutEditItem, font = ("Helvetica", "11", "bold"))
+                winItemCreator = sg.Window("Item editor", layoutEditItem, font = ("Helvetica", "11", "bold"), icon="icon.ico")
 
             
 

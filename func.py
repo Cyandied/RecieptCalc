@@ -5,9 +5,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.lines as lines
+from random import uniform
 
 relavantFile = 'PullStuff.JSON'
-URL = "http://192.168.1.126/api/"
+URL = "NoThx"
+# URL = "http://192.168.1.126/api/"
 
 storeColors = {
     "netto": "gold",
@@ -90,6 +92,25 @@ def WriteTo(reciept):
 
             json.dump(file_data, f, indent=4)
 
+def TryDelete(id):
+    try:
+        Try = json.loads(requests.delete(URL+id).text, timeout = 0.5)
+        if "error" in Try:
+            return False
+        else: return True
+    except Exception:
+        with open(relavantFile) as f:
+            data = json.load(f)
+        del (data[FindIndexFromId(id,data)])
+        with open(relavantFile, "w") as f:
+            json.dump(data, f)
+        return True
+
+def FindIndexFromId(id,data):
+    for i in np.arange(0,len(data)):
+        if data[i]["id"] == int(id):
+            return i
+
 def LoadAll():
     receipts = PullAll()
     listForListbox = []
@@ -139,12 +160,6 @@ def ReturnItem(id):
 
     receiptToShow = f'Date: {receipts["date"]} \nStore: {receipts["store"]} \nPaid by: {receipts["paidBy"]} \nSubtotal: {receipts["subtotal"]} kr \nContributors to pay: {contribToPay_string} \nItems: {item_string}'
     return receiptToShow
-
-def TryDelete(id):
-    Try = json.loads(requests.delete(URL+id).text)
-    if "error" in Try:
-        return False
-    return True
 
 
 MonthDates = {
@@ -209,6 +224,9 @@ def PlotForYear(year):
             for store in allStores:
                 if store not in dataForMonthByStore.keys():
                     dataForMonthByStore[store] = [0,0,0,0,0,0,0,0,0,0,0,0]
+                    if store.lower() not in storeColors.keys():
+                        storeColors[store.lower()] = [uniform(0,1),uniform(0,1),uniform(0,1)]
+                        
                     colors.append(storeColors[store.lower()])
                 monthTotal = np.sum(monthData[store])
                 dataForMonthByStore[store][month-1] = monthTotal
