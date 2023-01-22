@@ -8,8 +8,8 @@ import matplotlib.lines as lines
 from random import uniform
 
 relavantFile = 'PullStuff.JSON'
-URL = "NoThx"
-# URL = "http://192.168.1.126/api/"
+# URL = "NoThx"
+URL = "http://192.168.1.126/api/"
 
 storeColors = {
     "netto": "gold",
